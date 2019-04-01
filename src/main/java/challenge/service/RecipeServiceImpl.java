@@ -1,7 +1,5 @@
 package challenge.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +25,11 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeRepository.findAll();
 	}
 
-	public Recipe findById(String id){
+	public RecipeDTO findById(String id){
 		Optional<Recipe> recipe = recipeRepository.findById(id);
-		return recipe.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!"));
+		recipe.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!"));
+		RecipeDTO  recipeDTO = converterRecipeFromRecipeDTO(recipe.get());
+		return recipeDTO;
  	}
 
 	@Override
@@ -40,7 +40,7 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public void update(String id, Recipe recipe) {
 
-		Optional<Recipe> objectRecipeBanco = recipeRepository.findById(id);
+		Optional<Recipe> objectRecipeBanco = Optional.of(recipeRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!")));
 
 			Recipe newObject = new Recipe();
 			newObject.setId(id);
@@ -77,8 +77,11 @@ public class RecipeServiceImpl implements RecipeService {
 //	}
 
 	@Override
-	public Optional<Recipe> get(String id) {
-	 return recipeRepository.findById(id);
+	public Recipe get(String id) {
+
+		Optional<Recipe> recipe = recipeRepository.findById(id);
+
+	 return recipe.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!"));
 	}
 
 	@Override
@@ -229,10 +232,15 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
-//	public  Recipe fromDTO(RecipeDTO recipeDTO){
-//		return new Recipe(recipeDTO.getId(),recipeDTO.getTitle(),recipeDTO.getDescription(),recipeDTO.getLikes(),recipeDTO.getIngredients(), );
-//	}
-
+	public  RecipeDTO converterRecipeFromRecipeDTO(Recipe recipe){
+		return new RecipeDTO(recipe.getId(),recipe.getTitle(), recipe.getDescription(), recipe.getLikes(), recipe.getIngredients(), recipe.getComments());
 	}
+
+	public Recipe converterRecipeDTOfromRecipe(String id, RecipeDTO recipeDTO){
+		return new Recipe(recipeDTO.getTitle(), recipeDTO.getDescription(), recipeDTO.getLikes(), recipeDTO.getIngredients(), recipeDTO.getComments());
+	}
+
+
+}
 
 

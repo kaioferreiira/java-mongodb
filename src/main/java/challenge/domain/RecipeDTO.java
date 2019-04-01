@@ -1,8 +1,6 @@
 package challenge.domain;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,18 +15,18 @@ public class RecipeDTO {
     private String description;
     private List<String> likes;
     private List<String> ingredients;
-    private RecipeComment coments;
+    private List<RecipeComment> comments = new ArrayList();
 
-    public RecipeDTO() {
+    public RecipeDTO(Recipe recipeObj) {
     }
 
-    public RecipeDTO(Recipe recipe) {
-          id = recipe.getId();
-          title = recipe.getTitle();
-          description =  recipe.getDescription();
-          likes = recipe.getLikes();
-          ingredients = recipe.getIngredients();
-//          coments = recipe.getComents();
+    public RecipeDTO(String id, String title, String description, List<String> likes, List<String> ingredients, List<RecipeComment> comments) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.likes = likes;
+        this.ingredients = ingredients;
+        this.comments = comments;
     }
 
     public String getId() {
@@ -71,20 +69,20 @@ public class RecipeDTO {
         this.ingredients = ingredients;
     }
 
-    public RecipeComment getComents() {
-        return coments;
+    public List<RecipeComment> getComments() {
+        return comments;
     }
 
-    public void setComents(RecipeComment coments) {
-        this.coments = coments;
+    public void setComments(List<RecipeComment> comments) {
+        this.comments = comments;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RecipeDTO recipe = (RecipeDTO) o;
-        return Objects.equals(id, recipe.id);
+        RecipeDTO recipeDTO = (RecipeDTO) o;
+        return Objects.equals(id, recipeDTO.id);
     }
 
     @Override
@@ -94,13 +92,13 @@ public class RecipeDTO {
 
     @Override
     public String toString() {
-        return "Recipe{" +
-                "id=" + id +
+        return "RecipeDTO{" +
+                "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", likes=" + likes +
                 ", ingredients=" + ingredients +
-                ", coments=" + coments +
+                ", comments=" + comments +
                 '}';
     }
 }

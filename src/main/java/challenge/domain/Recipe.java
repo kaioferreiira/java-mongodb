@@ -28,8 +28,7 @@ public class Recipe {
     }
 
 
-    public Recipe(String id, String title, String description, List<String> likes, List<String> ingredients, List<RecipeComment> coments) {
-        this.id = id;
+    public Recipe(String title, String description, List<String> likes, List<String> ingredients, List<RecipeComment> coments) {
         this.title = title;
         this.description = description;
         this.likes = likes;

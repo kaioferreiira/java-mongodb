@@ -48,9 +48,10 @@ public class Instantiation implements CommandLineRunner {
         comments.add(recipeComment1);
         comments.add(recipeComment2);
 
-        Recipe recipe = new Recipe(null,title,description,likes,ingredients,comments);
-
         recipeCommentRepository.saveAll(Arrays.asList(recipeComment1, recipeComment2));
+
+        Recipe recipe = new Recipe(title,description,likes,ingredients,comments);
+
         recipeRepository.save(recipe);
     }
 }

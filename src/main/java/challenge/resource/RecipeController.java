@@ -21,27 +21,33 @@ public class RecipeController {
 	@GetMapping("/recipe/findAll")
 	public ResponseEntity<List<RecipeDTO>> findAll() {
 		List<Recipe> recipe = service.findAll();
-		List<RecipeDTO> listDto = recipe.stream().map(x -> new RecipeDTO(x)).collect(Collectors.toList());
+		List<RecipeDTO> listDto = recipe.stream()
+										.map(recipe1 -> new RecipeDTO(recipe1.getId(), recipe1.getTitle(), recipe1.getDescription(), recipe1.getLikes(), recipe1.getIngredients(), recipe1.getComments()))
+										.collect(Collectors.toList());
 		return ResponseEntity.ok(listDto);
 	}
 
-//	@GetMapping("/findById/{id}")
-//	public ResponseEntity <RecipeDTO> findById(@PathVariable String id) {
-//		Recipe recipe = service.findById(id);
-//		return ResponseEntity.ok(new RecipeDTO(recipe));
-//	}
+	@GetMapping("/findById/{id}")
+	public ResponseEntity<RecipeDTO> findById(@PathVariable String id) {
+		RecipeDTO recipe = service.findById(id);
+		return ResponseEntity.ok(recipe);
+	}
 
-//	*****************************************************************************//
+	@GetMapping("/recipe/{id}")
+	public ResponseEntity <Recipe> get(@PathVariable String id) {
+		Recipe recipe = service.get(id);
+		return  ResponseEntity.ok(recipe);
+	}
 
-	@PostMapping("/recipe")
+	@PostMapping("/recipe/salvar")
 	public ResponseEntity<Recipe> save(@RequestBody Recipe recipe) {
 		Recipe obj = service.save(recipe);
 		return ResponseEntity.ok(obj);
 	}
 
 	@PutMapping("/recipe/{id}")
-	public void update(@PathVariable String id, @RequestBody Recipe recipe) {
-		service.update(id, recipe);
+	public void update(@PathVariable String id, @RequestBody Recipe recipeDTO) {
+		service.update(id, recipeDTO);
 	}
 
 	@DeleteMapping("/recipe/{id}")
@@ -49,11 +55,7 @@ public class RecipeController {
 		service.delete(id);
 	}
 
-
-	@GetMapping("/recipe/{id}")
-	public ResponseEntity<Optional<Recipe>> get(@PathVariable String id) {
-		return  ResponseEntity.ok(service.get(id));
-	}
+	//******** ENDPOINTS FINALIZADOS ***********************************************//
 
 	@GetMapping("/recipe/ingredient")
 	public ResponseEntity<List<Recipe>> listByIngredient(@RequestParam String ingredient) {

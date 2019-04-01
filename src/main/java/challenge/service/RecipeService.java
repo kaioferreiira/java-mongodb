@@ -2,9 +2,9 @@ package challenge.service;
 
 import challenge.domain.RecipeComment;
 import challenge.domain.Recipe;
+import challenge.domain.RecipeDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface RecipeService {
 
@@ -14,7 +14,7 @@ public interface RecipeService {
 
 	void delete(String id);
 
-	Optional<Recipe> get(String id);
+	Recipe get(String id);
 
 	List<Recipe> listByIngredient(String ingredient);
 
